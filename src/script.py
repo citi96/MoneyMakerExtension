@@ -24,6 +24,7 @@ class Manager(Thread):
     _logger = None
 
     def __init__(self):
+        super(Manager, self).__init__()
         self._logger = log.MyLogger.__call__().get_logger()
 
     def get_field(self, field_name, fields):
@@ -51,11 +52,11 @@ class Manager(Thread):
 
         while True:
             try:
-                if not os.path.exists("/home/citi/Downloads/foo.txt"):
+                if not os.path.exists("C:\\Users\\user\\Downloads\\Info.txt"):
                     continue
 
                 lines = []
-                with open("/home/citi/Downloads/foo.txt") as f:
+                with open("C:\\Users\\user\\Downloads\\Foo.txt") as f:
                     lines = f.readlines()
 
                 if not lines:
@@ -64,16 +65,16 @@ class Manager(Thread):
                 print(lines)
 
                 if not self._strategy:
-                    topCol = self.get_field("TopColumn").split(",")
-                    midCol = self.get_field("MidColumn").split(",")
-                    botCol = self.get_field("BotColumn").split(",")
+                    topCol = self.get_field("TopColumn", lines).split(",")
+                    midCol = self.get_field("MidColumn", lines).split(",")
+                    botCol = self.get_field("BotColumn", lines).split(",")
                     self._strategy = Strategy(topCol, midCol, botCol)
 
                 state = self.play(
-                    state, self.get_field("LastDraw"), self.get_field("Message")
+                    state, self.get_field("LastDraw", lines), self.get_field("Message", lines)
                 )
 
-                os.remove("/home/citi/Downloads/foo.txt")
+                os.remove("C:\\Users\\user\\Downloads\\Foo.txt")
 
                 time.sleep(1)
             except:
@@ -81,8 +82,11 @@ class Manager(Thread):
 
 
 class Strategy:
-    _topCol, _midCol, _botCol = []
-    _xOffsets, _yOffsets = 0
+    _topCol = []
+    _midCol = []
+    _botCol = []
+    _xOffsets = 0
+    _yOffsets = 0
     _dicColumnsNumbers = {}
     _logger = None
 
@@ -132,5 +136,9 @@ class Strategy:
         pyautogui.click(col1[0] + self.xOffsets, col1[1] + self.yOffsets)
         pyautogui.click(col2[0] + self.xOffsets, col2[1] + self.yOffsets)
 
+
 if __name__ == "__main__":
-    Manager().start()
+    try:
+        Manager().start()
+    except:
+        log.MyLogger.__call__().get_logger().exception("message")

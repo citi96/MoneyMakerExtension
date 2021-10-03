@@ -5,7 +5,7 @@ chrome.runtime.onMessage.addListener(
             "from the extension");
         
         downloadFile({
-            filename: "foo.txt",
+            filename: "Info.txt",
             content: request.values
         });
     }
