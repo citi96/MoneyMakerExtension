@@ -31,7 +31,6 @@ class Manager(Thread):
         return matching[0].replace(" ", "").split(":")
 
     def play(self, state, lastDraw, dealerMessage):
-<<<<<<< HEAD
         if (
             state == State.PLAYED
             and dealerMessage == "Attendi finché non inizia il prossimo giro"
@@ -42,12 +41,6 @@ class Manager(Thread):
             state == State.WAITING_TO_PLAY
             and dealerMessage == "Effettua Le Tue Puntate"
         ):
-=======
-        if state == State.PLAYED and dealerMessage == "Attendi finché non inizia il prossimo giro":
-            return State.WAITING_TO_PLAY
-
-        if state == State.WAITING_TO_PLAY and dealerMessage == "Effettua Le Tue Puntate":
->>>>>>> 428d54f04d4d4d8833cd00677ce8274d40eea03d
             if self._strategy.execute(lastDraw):
                 return State.PLAYED
             else:
@@ -85,10 +78,6 @@ class Manager(Thread):
                 time.sleep(1)
             except:
                 self._logger.exception("message")
-<<<<<<< HEAD
-=======
-            
->>>>>>> 428d54f04d4d4d8833cd00677ce8274d40eea03d
 
 
 class Strategy:
@@ -133,11 +122,6 @@ class Strategy:
 
             if self.dicColumnsNumbers[drawNumber] == Column.BOTTOM:
                 self.click_column(self.midCol, self.topCol)
-<<<<<<< HEAD
-
-=======
-            
->>>>>>> 428d54f04d4d4d8833cd00677ce8274d40eea03d
             if self.dicColumnsNumbers[drawNumber] == Column.MID:
                 self.click_column(self.topCol, self.botCol)
         except:
@@ -148,9 +132,5 @@ class Strategy:
         pyautogui.click(col1[0] + self.xOffsets, col1[1] + self.yOffsets)
         pyautogui.click(col2[0] + self.xOffsets, col2[1] + self.yOffsets)
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 428d54f04d4d4d8833cd00677ce8274d40eea03d
 if __name__ == "__main__":
     Manager().start()
