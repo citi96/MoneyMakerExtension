@@ -3,14 +3,23 @@
     "name": "Button Click",  
     "description": "Be able to press buttons",  
     "version": "1.0",    
-    "browser_action": { 
+    "page_action": { 
         "default_icon": "icon.png",
         "default_popup": "popup.html"  
     },
     "permissions": [
+        "storage", 
+        "activeTab", 
+        "declarativeContent", 
+        "https://*/*"
         "tabs", 
-        "downloads",
-        "<all_urls>"
+        "downloads"
+    ],
+    "content_scripts": [
+      {
+        "matches": ["https://*/*"],
+        "js": ["contents.js"]
+      }
     ],
     "background": {
         "scripts": ["background.js"],
