@@ -1,15 +1,35 @@
-<!doctype html> 
-<style>
-  h2.red-text {
-    color: red;
-  }
-</style>
+<!--Start button of logging-->
+    <button class="button button1" id="click-start" >
+    <u> Start Logging </u>
+    </button>
 
-<html>  
-    <head><title>Fill</title></head>  
-    <body>
-        <h2 class="red-text" id="htwo">Stopped</h2>
-        <button id="press">Start</button>  
-        <script src="popup.js"></script> 
-    </body>
-</html>
+    <!--Stop button of logging-->
+    <button class="button button2" id="click-stop">
+    <u> Stop Logging </u>
+    </button>
+
+    <table class="roundedCorners" id = "tableID" border="1">
+        <thead>
+        <!--Example table header row with the user, url visited, and time they visited the url etc-->
+            <tr>
+      <!--categories-->
+                <th>Browser</th>
+                <th>Timestamp</th>
+                <th>URL</th>
+                <th>Protocol</th>
+                <th>Downloaded File Names</th>
+                <th>Description</th>
+
+            </tr>
+        </thead>
+        <tbody id= "tbodyID">
+
+
+        </tbody>
+     <!--Goal is to append to this table-->
+
+
+    </table>
+    <script src='./popup.js'>
+    //To execute popup.js 
+    </script>
