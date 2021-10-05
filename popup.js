@@ -1,11 +1,38 @@
-function injectTheScript() {
-    // Gets all tabs that have the specified properties, or all tabs if no properties are specified (in our case we choose current active tab)
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        document.getElementById("htwo").style.color="green";
-        // Injects JavaScript code into a page
-        chrome.tabs.executeScript(tabs[0].id, {file: "utilities.js"});
-    });
+var running = false
+chrome.storage.local.get({isStarted : false}, function (items) {
+    running = items.isStarted
+    console.log("type:" + typeof items.isStarted + " - isStarted: " + items.isStarted + " - running: " + running + " - Expression value: " + (!typeof items.isStarted === 'undefined' && items.isStarted))
+    updateGraphic(running);
+
+    // adding listener to your button in popup window
+    document.getElementById('press').addEventListener('click', injectTheScript);
+});
+
+function updateGraphic(running) {
+    var textElement = document.getElementById("htwo");
+    var buttonElement = document.getElementById("press");
+
+    if (!running) {
+        textElement.style.color = "red";
+        textElement.textContent = "Stopped";
+        buttonElement.textContent = "Start";
+    } else {
+        textElement.style.color = "green";
+        textElement.textContent = "Started";
+        buttonElement.textContent = "Stop";
+    }
 }
 
-// adding listener to your button in popup window
-document.getElementById('press').addEventListener('click', injectTheScript);
+function injectTheScript() {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        running = !running;
+
+        // Injects JavaScript code into a page
+        chrome.storage.local.set({
+            isStarted: running
+        }, function () {
+            chrome.tabs.executeScript(tabs[0].id, { file: 'utilities.js' });
+            updateGraphic(running);
+        });
+    });
+}
