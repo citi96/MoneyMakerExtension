@@ -10,7 +10,6 @@ class SingletonType(type):
             cls._instances[cls] = super(SingletonType, cls).__call__(*args, **kwargs)
         return cls._instances[cls]
 
-# python 3 style
 class MyLogger(object, metaclass=SingletonType):
     _logger = None
 
@@ -27,7 +26,7 @@ class MyLogger(object, metaclass=SingletonType):
         if not os.path.isdir(dirname):
             os.mkdir(dirname)
         fileHandler = logging.FileHandler(
-            dirname + "/log_" + now.strftime("%Y-%m-%d") + ".log"
+            dirname + "/log_" + now.strftime("%Y%m%d") + ".log"
         )
 
         streamHandler = logging.StreamHandler()

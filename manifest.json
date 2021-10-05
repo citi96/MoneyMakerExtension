@@ -10,6 +10,7 @@
   "permissions": [
     "tabs",
     "downloads",
+    "storage", 
     "<all_urls>"
   ],
   "background": {
