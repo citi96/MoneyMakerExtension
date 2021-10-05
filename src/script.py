@@ -29,13 +29,14 @@ class Manager(Thread):
 
     def get_field(self, field_name, fields):
         matching = [s for s in fields if field_name in s]
-        return matching[0].replace(" ", "").split(":")
+        return matching[0].split(":")[1].strip().replace("\n","")
 
     def play(self, state, lastDraw, dealerMessage):
         if (
             state == State.PLAYED
             and dealerMessage == "Attendi finché non inizia il prossimo giro"
         ):
+            os.remove("/home/citi/Downloads/Info.txt")
             return State.WAITING_TO_PLAY
 
         if (
@@ -43,6 +44,7 @@ class Manager(Thread):
             and dealerMessage == "Effettua Le Tue Puntate"
         ):
             if self._strategy.execute(lastDraw):
+                os.remove("/home/citi/Downloads/Info.txt")
                 return State.PLAYED
             else:
                 return State.WAITING_TO_PLAY
@@ -52,11 +54,11 @@ class Manager(Thread):
 
         while True:
             try:
-                if not os.path.exists("C:\\Users\\user\\Downloads\\Info.txt"):
+                if not os.path.exists("/home/citi/Downloads/Info.txt"):
                     continue
 
                 lines = []
-                with open("C:\\Users\\user\\Downloads\\Foo.txt") as f:
+                with open("/home/citi/Downloads/Info.txt") as f:
                     lines = f.readlines()
 
                 if not lines:
@@ -74,11 +76,10 @@ class Manager(Thread):
                     state, self.get_field("LastDraw", lines), self.get_field("Message", lines)
                 )
 
-                os.remove("C:\\Users\\user\\Downloads\\Foo.txt")
-
                 time.sleep(1)
             except:
                 self._logger.exception("message")
+                time.sleep(1)
 
 
 class Strategy:
@@ -105,36 +106,40 @@ class Strategy:
             self._logger.exception("message")
 
     def init_dic(self):
-        self.dicColumnsNumbers.fromkeys(range(36))
+        self._dicColumnsNumbers.fromkeys(range(36))
         for i in range(36):
             if i == 0:
-                self.dicColumnsNumbers[i] = Column.NONE
+                self._dicColumnsNumbers[i] = Column.NONE
             if i % 3 == 0:
-                self.dicColumnsNumbers[i] = Column.TOP
+                self._dicColumnsNumbers[i] = Column.TOP
             if i % 3 == 2:
-                self.dicColumnsNumbers[i] = Column.MID
+                self._dicColumnsNumbers[i] = Column.MID
             if i % 3 == 1:
-                self.dicColumnsNumbers[i] = Column.BOTTOM
+                self._dicColumnsNumbers[i] = Column.BOTTOM
 
     def execute(self, drawNumber):
         try:
-            if self.dicColumnsNumbers[drawNumber] == Column.NONE:
+            drawNumber = int(drawNumber)
+
+            if self._dicColumnsNumbers[drawNumber] == Column.NONE:
                 return True
 
-            if self.dicColumnsNumbers[drawNumber] == Column.TOP:
-                self.click_column(self.midCol, self.botCol)
+            if self._dicColumnsNumbers[drawNumber] == Column.TOP:
+                self.click_column(self._midCol, self._botCol)
 
-            if self.dicColumnsNumbers[drawNumber] == Column.BOTTOM:
-                self.click_column(self.midCol, self.topCol)
-            if self.dicColumnsNumbers[drawNumber] == Column.MID:
-                self.click_column(self.topCol, self.botCol)
+            if self._dicColumnsNumbers[drawNumber] == Column.BOTTOM:
+                self.click_column(self._midCol, self._topCol)
+            if self._dicColumnsNumbers[drawNumber] == Column.MID:
+                self.click_column(self._topCol, self._botCol)
+
+            return True
         except:
             self._logger.exception("message")
             return False
 
     def click_column(self, col1, col2):
-        pyautogui.click(col1[0] + self.xOffsets, col1[1] + self.yOffsets)
-        pyautogui.click(col2[0] + self.xOffsets, col2[1] + self.yOffsets)
+        pyautogui.click(float(col1[0]) + self._xOffsets, float(col1[1]) + self._yOffsets)
+        pyautogui.click(float(col2[0]) + self._xOffsets, float(col2[1]) + self._yOffsets)
 
 
 if __name__ == "__main__":
