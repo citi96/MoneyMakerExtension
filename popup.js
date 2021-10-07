@@ -1,7 +1,6 @@
 var running = false
 chrome.storage.local.get({isStarted : false}, function (items) {
     running = items.isStarted
-    console.log("type:" + typeof items.isStarted + " - isStarted: " + items.isStarted + " - running: " + running + " - Expression value: " + (!typeof items.isStarted === 'undefined' && items.isStarted))
     updateGraphic(running);
 
     // adding listener to your button in popup window

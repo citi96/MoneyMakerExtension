@@ -46,8 +46,6 @@ class Strategy:
 
     def execute(self, drawNumber):
         try:
-            drawNumber = int(drawNumber)
-
             if self._dicColumnsNumbers[drawNumber] == Column.NONE:
                 return True
 
@@ -64,8 +62,8 @@ class Strategy:
             return False
 
     def click_columns(self, col1, col2):
-        self.click(float(col1[0]) + self._xOffsets, float(col1[1]) + self._yOffsets)
-        self.click(float(col2[0]) + self._xOffsets, float(col2[1]) + self._yOffsets)
+        self.click(col1[0] + self._xOffsets, col1[1] + self._yOffsets)
+        self.click(col2[0] + self._xOffsets, col2[1] + self._yOffsets)
 
     def click(self, x, y, duration=0):
         pyautogui.moveTo(x,y, duration=duration)

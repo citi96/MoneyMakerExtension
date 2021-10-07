@@ -13,21 +13,15 @@ chrome.runtime.onMessage.addListener(
 
 function downloadFile(options) {
     try {
-        console.log("In download method");
-
         if (!options.url) {
             var blob = new Blob([options.content], { type: "text/plain;charset=UTF-8" });
             options.url = window.URL.createObjectURL(blob);
-
-            console.log(options.url);
         }
 
         chrome.downloads.download({
             url: options.url,
             filename: options.filename
         })
-
-        console.log("Downloaded");
     } catch (error) {
         console.log(error);
     }
