@@ -1,2 +1,5 @@
 log/*
 src/__pycache__/*
+.vscode/*
+src/entities/controllers/__pycache__/*
+src/entities/models/__pycache__/*
